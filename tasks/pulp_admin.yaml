@@ -1,0 +1,10 @@
+---
+
+- name: Install Pulp admin client
+  yum:
+    name: "@pulp-admin"
+
+- name: Configure Pulp admin client
+  template:
+    src: admin.conf.j2
+    dest: "{{ pulp_admin_config_file }}"

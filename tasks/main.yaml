@@ -1,0 +1,10 @@
+---
+
+- include: pulp_server.yaml
+  when: pulp_install_server
+
+- include: pulp_admin.yaml
+  when: pulp_install_admin
+
+- include: pulp_consumer.yaml
+  when: pulp_install_consumer

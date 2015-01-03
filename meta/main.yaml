@@ -1,0 +1,20 @@
+---
+
+galaxy_info:
+  author: Jiri Tyr
+  description: Role which installs Pulp server
+  license: MIT
+  min_ansible_version: 1.7
+  platforms:
+    - name: EL
+      versions:
+        - 6
+        - 7
+  categories:
+    - system
+dependencies:
+  - role: yumrepo
+    yumrepo_repos: "{{ pulp_yum_repo }}"
+  - role: qpid_cpp_server
+    qpid_cpp_server_qpidd_config: "{{ pulp_qpidd_config }}"
+    when: pulp_install_qpid

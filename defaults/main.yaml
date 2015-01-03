@@ -1,0 +1,128 @@
+---
+
+# Whether to install Qpid server as a dependency of this role
+pulp_install_qpid: false
+
+# Whether to install Pulp server
+pulp_install_server: false
+
+# Whether to install Pulp admin client
+pulp_install_admin: false
+
+# Whether to install Pulp consumer
+pulp_install_consumer: false
+
+# Whether to run pulp_celerybeat service
+# (should run only on one Pulp server)
+pulp_run_celerybeat: false
+
+# Whether to run pulp_resource_manager service
+# (should run only on one Pulp server)
+pulp_run_resource_manager: false
+
+# Default YUM repository
+pulp_yum_repo:
+  pulp:
+    name: Pulp Project repository
+    baseurl: https://repos.fedorapeople.org/repos/pulp/pulp/stable/latest/$releasever/$basearch/
+    gpgcheck: 0
+
+# Default YUM group for Pulp server
+pulp_server_pkgs:
+  - "@pulp-server-qpid"
+  # For RabbitMQ use this instead:
+  #- "@pulp-server"
+  #- python-gofer-amqplib
+
+# Default YUM group for Pulp consumer
+pulp_consumer_pkgs:
+  - "@pulp-consumer-qpid"
+  # For RabbitMQ use these instead:
+  #- "@pulp-consumer"
+  #- python-gofer-amqplib
+
+# Whether to enable or disable SSL verification
+pulp_verify_ssl: false
+
+# Default FQDN of the host (only for single machine installation)
+pulp_host: localhost.localdomain
+
+# Default Qpid daemon configuration
+pulp_qpidd_config:
+  auth: 'no'
+
+# Default Pulp server configuration
+pulp_server_config:
+  database: {}
+  server: {}
+  authentication: {}
+  security: {}
+  consumer_history: {}
+  data_reaping: {}
+  oauth: {}
+  messaging: {}
+  tasks: {}
+  email: {}
+
+# Default parameters of the Pulp workers configuration
+pulp_workers_celeryd_log_file: /var/log/pulp/%n.log
+pulp_workers_celeryd_log_level: INFO
+pulp_workers_celeryd_pid_file: /var/run/pulp/%n.pid
+pulp_workers_pythonencoding: UTF-8
+pulp_workers_pulp_concurrency: "{{ ansible_processor_cores }}"
+
+# Default Pulp workers configuration
+pulp_workers_config:
+  # Workers variables which can be changed
+  celeryd_log_file: "{{ pulp_workers_celeryd_log_file }}"
+  celeryd_log_level: "{{ pulp_workers_celeryd_log_level }}"
+  celeryd_pid_file: "{{ pulp_workers_celeryd_pid_file }}"
+  pythonioencoding: "{{ pulp_workers_pythonencoding }}"
+  pulp_concurrency: "{{ pulp_workers_pulp_concurrency }}"
+  # Workers variables which should not be changed
+  celery_app: pulp.server.async.app
+  celery_create_dirs: 1
+  celeryd_nodes: ""
+  celeryd_opts: "-c 1 --events --umask=18"
+  celeryd_user: apache
+  default_nodes: ""
+
+# Default Pulp admin config file path
+pulp_admin_config_file: /etc/pulp/admin/admin.conf
+
+# Default Pulp admin configuration
+pulp_admin_config:
+  server:
+    host: "{{ pulp_host }}"
+    verify_ssl: "{{ pulp_verify_ssl }}"
+  client: {}
+  filesystem: {}
+  logging: {}
+  output: {}
+
+# Default Pulp consumer configuration
+pulp_consumer_config:
+  server:
+    host: "{{ pulp_host }}"
+    verify_ssl: "{{ pulp_verify_ssl }}"
+  authentication: {}
+  client: {}
+  filesystem: {}
+  reboot: {}
+  logging: {}
+  output: {}
+  messaging: {}
+  profile: {}
+
+# Default Pulp repo_auth configuration
+pulp_server_repo_auth_config:
+  main:
+    enabled: false
+    log_failed_cert: true
+    log_failed_cert_verbose: false
+    max_num_certs_in_chain: 100
+    verify_ssl: "{{ pulp_verify_ssl }}"
+  repos:
+    cert_location: /etc/pki/pulp/content
+    global_cert_location: /etc/pki/pulp/content
+    protected_repo_listing_file: /etc/pki/pulp/content/pulp-protected-repos

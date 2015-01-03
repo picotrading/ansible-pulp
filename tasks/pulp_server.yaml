@@ -1,0 +1,69 @@
+---
+
+- name: Install Pulp server
+  yum:
+    name: "{{ item }}"
+  with_items: pulp_server_pkgs
+
+- name: Configure Pulp server
+  template:
+    src: server.conf.j2
+    dest: /etc/pulp/server.conf
+  notify:
+    - Restart Apache service
+
+- name: Check if Pulp's DB was initialized
+  stat:
+    path: /var/lib/pulp/db_initialized.flag
+  register: db_init
+
+- name: Initialize Pulp's DB
+  shell: sudo -u apache pulp-manage-db && touch /var/lib/pulp/db_initialized.flag
+  notify:
+    - Restart Apache service
+    - Restart Pulp workers service
+    - Restart Pulp celerybeat service
+    - Restart Pulp resource manager service
+  when: not db_init.stat.exists
+
+- name: Configure workers
+  template:
+    src: pulp_workers.j2
+    dest: /etc/default/pulp_workers
+  notify:
+    - Restart Pulp workers service
+
+- name: Configure repo authentication
+  template:
+    src: repo_auth.conf.j2
+    dest: /etc/pulp/repo_auth.conf
+  notify:
+    - Restart Pulp workers service
+    - Restart Pulp celerybeat service
+    - Restart Pulp resource manager service
+
+- name: Make Apache server running
+  service:
+    name: httpd
+    enabled: yes
+    state: running
+
+- name: Make Pulp workers running
+  service:
+    name: pulp_workers
+    enabled: yes
+    state: running
+
+- name: Make Pulp celerybeat running
+  service:
+    name: pulp_celerybeat
+    enabled: yes
+    state: running
+  when: pulp_run_celerybeat
+
+- name: Make Pulp resource manager running
+  service:
+    name: pulp_resource_manager
+    enabled: yes
+    state: running
+  when: pulp_run_resource_manager
