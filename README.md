@@ -35,7 +35,16 @@ which worked for me:
       pulp_run_resource_manager: true
 ```
 
-The repos should then be accessible via URL `http://myhost/pulp/repos/`.
+After everything is installed, you can use the following commands to create a clone of a repo:
+
+```
+pulp-admin login -u admin -p admin
+pulp-admin rpm repo create --repo-id=base-el6-64-extras-20150103 --display-name=base-el6-64-extras-20150103 --relative-url=base/centos6/x86_64/extras/20150103 --serve-http=true --feed=http://mirror.centos.org/centos/6/extras/x86_64/
+pulp-admin rpm repo sync run --repo-id=base-el6-64-extras-20150103
+pulp-admin rpm repo list
+```
+
+The repo should then be accessible via URL `http://myhost/pulp/repos/`.
 
 It should also be possible to use it in multi-host setup, although I did not test
 it. The setup should look something like this:
