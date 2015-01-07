@@ -4,6 +4,9 @@
   assert:
     that: ansible_os_family == "RedHat"
 
+- include: pulp_patch.yaml
+  when: pulp_patch
+
 - include: pulp_server.yaml
   when: pulp_install_server
 

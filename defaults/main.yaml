@@ -20,6 +20,9 @@ pulp_run_celerybeat: false
 # (should run only on one Pulp server)
 pulp_run_resource_manager: false
 
+# Apply patch
+pulp_patch: true
+
 # Default YUM repository
 pulp_yum_repo:
   pulp:

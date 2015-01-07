@@ -1,0 +1,20 @@
+---
+
+- name: Copy patch file
+  copy:
+    src: publish_fix.patch
+    dest: /usr/lib/python{{ ansible_python_version | regex_replace('\.[0-9]+$') }}/site-packages/pulp_rpm/
+
+- name: Test if the patch was already applied
+  shell: patch -p3 -N --dry-run < publish_fix.patch
+  register: patch_test
+  args:
+    chdir: /usr/lib/python{{ ansible_python_version | regex_replace('\.[0-9]+$') }}/site-packages/pulp_rpm/
+  failed_when: False
+  changed_when: False
+
+- name: Apply the patch
+  shell: patch -p3 -N < publish_fix.patch
+  args:
+    chdir: /usr/lib/python{{ ansible_python_version | regex_replace('\.[0-9]+$') }}/site-packages/pulp_rpm/
+  when: patch_test.rc == 0

@@ -1,0 +1,33 @@
+diff --git a/plugins/pulp_rpm/plugins/distributors/yum/metadata/filelists.py b/plugins/pulp_rpm/plugins/distributors/yum/metadata/filelists.py
+index ebffdaa..6fd3253 100644
+--- a/plugins/pulp_rpm/plugins/distributors/yum/metadata/filelists.py
++++ b/plugins/pulp_rpm/plugins/distributors/yum/metadata/filelists.py
+@@ -40,4 +40,6 @@ def add_unit_metadata(self, unit):
+         :type  unit: pulp.plugins.model.Unit
+         """
+         metadata = unit.metadata['repodata']['filelists']
++        if isinstance(metadata, unicode):
++            metadata = metadata.encode('utf-8')
+         self.metadata_file_handle.write(metadata)
+diff --git a/plugins/pulp_rpm/plugins/distributors/yum/metadata/other.py b/plugins/pulp_rpm/plugins/distributors/yum/metadata/other.py
+index d552779..57f3bc2 100644
+--- a/plugins/pulp_rpm/plugins/distributors/yum/metadata/other.py
++++ b/plugins/pulp_rpm/plugins/distributors/yum/metadata/other.py
+@@ -40,4 +40,6 @@ def add_unit_metadata(self, unit):
+         :type  unit: pulp.plugins.model.Unit
+         """
+         metadata = unit.metadata['repodata']['other']
++        if isinstance(metadata, unicode):
++            metadata = metadata.encode('utf-8')
+         self.metadata_file_handle.write(metadata)
+diff --git a/plugins/pulp_rpm/plugins/distributors/yum/metadata/primary.py b/plugins/pulp_rpm/plugins/distributors/yum/metadata/primary.py
+index 5f4f9f4..93a85f1 100644
+--- a/plugins/pulp_rpm/plugins/distributors/yum/metadata/primary.py
++++ b/plugins/pulp_rpm/plugins/distributors/yum/metadata/primary.py
+@@ -52,4 +52,6 @@ def add_unit_metadata(self, unit):
+         :type  unit: pulp.plugins.model.Unit
+         """
+         metadata = unit.metadata['repodata']['primary']
++        if isinstance(metadata, unicode):
++            metadata = metadata.encode('utf-8')
+         self.metadata_file_handle.write(metadata)
