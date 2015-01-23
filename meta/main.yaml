@@ -15,7 +15,7 @@ galaxy_info:
     - system
 dependencies:
   - role: yumrepo
-    yumrepo_repos: "{{ pulp_yum_repo }}"
+    yumrepo_repos: "{{ pulp_yumrepo_repos }}"
   - role: qpid_cpp_server
     qpid_cpp_server_qpidd_config: "{{ pulp_qpidd_config }}"
     when: pulp_install_qpid

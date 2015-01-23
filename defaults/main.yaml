@@ -23,11 +23,14 @@ pulp_run_resource_manager: false
 # Apply patch
 pulp_patch: true
 
+# Repo URL
+pulp_yum_repo_url: https://repos.fedorapeople.org/repos/pulp/pulp/stable/latest/$releasever/$basearch/
+
 # Default YUM repository
-pulp_yum_repo:
+pulp_yumrepo_repos:
   pulp:
     name: Pulp Project repository
-    baseurl: https://repos.fedorapeople.org/repos/pulp/pulp/stable/latest/$releasever/$basearch/
+    baseurl: "{{ pulp_yum_repo_url }}"
     gpgcheck: 0
 
 # Default YUM group for Pulp server
