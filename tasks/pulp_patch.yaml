@@ -18,3 +18,5 @@
   args:
     chdir: /usr/lib/python{{ ansible_python_version | regex_replace('\.[0-9]+$') }}/site-packages/pulp_rpm/
   when: patch_test.rc == 0
+  notify:
+    - Restart Pulp workers service
