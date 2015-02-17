@@ -6,6 +6,14 @@ in single host installation but it should be possible to spread the Pulp service
 across multiple hosts and even use different messaging tool than Qpid (e.g.
 RabbitMQ).
 
+The configuraton of the role is done in such way that it should not be necessary
+to change the role for any kind of configuration. All can be done either by
+changing role parameters or by declaring completely new configuration as a
+variable. That makes this role absolutely universal. See the examples below for
+more details.
+
+Please report any issues or send PR.
+
 
 Example
 -------
@@ -165,6 +173,15 @@ system. Again, I did not test it but the setup should look something like this:
         ...
 ```
 
+This role requires [Jinja2 Encoder
+Macros](https://github.com/picotrading/jinja2-encoder-macros) which must be
+placed into the same directory as the playbook:
+
+```
+$ ls -1 *.yaml
+site.yaml
+$ git clone https://github.com/picotrading/jinja2-encoder-macros.git ./templates/encoder
+```
 
 
 Role variables
@@ -308,6 +325,7 @@ Dependencies
 * [`mongodb`](https://github.com/picotrading/ansible-mongodb) role
 * [`yumrepo`](https://github.com/picotrading/ansible-yumrepo) role
 * [`qpid_cpp_server`](https://github.com/picotrading/ansible-qpid_cpp_server) role (optional)
+* [Jinja2 Encoder Macros](https://github.com/picotrading/jinja2-encoder-macros)
 
 
 License
