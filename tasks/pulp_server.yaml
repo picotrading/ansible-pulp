@@ -4,6 +4,13 @@
   yum:
     name: "{{ item }}"
   with_items: pulp_server_pkgs
+  notify:
+    - Restart Apache service
+    - Restart Pulp workers service
+    - Restart Pulp celerybeat service
+    - Restart Pulp resource manager service
+  tags:
+    - pulp_pkg
 
 - name: Configure Pulp server
   template:
@@ -11,6 +18,11 @@
     dest: /etc/pulp/server.conf
   notify:
     - Restart Apache service
+    - Restart Pulp workers service
+    - Restart Pulp celerybeat service
+    - Restart Pulp resource manager service
+  tags:
+    - pulp_config
 
 - name: Check if Pulp's DB was initialized
   stat:
@@ -32,6 +44,8 @@
     dest: /etc/default/pulp_workers
   notify:
     - Restart Pulp workers service
+  tags:
+    - pulp_config
 
 - name: Configure repo authentication
   template:
@@ -41,6 +55,8 @@
     - Restart Pulp workers service
     - Restart Pulp celerybeat service
     - Restart Pulp resource manager service
+  tags:
+    - pulp_config
 
 - name: Make Apache server running
   service:

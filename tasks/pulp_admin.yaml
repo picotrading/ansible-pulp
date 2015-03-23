@@ -3,8 +3,16 @@
 - name: Install Pulp admin client
   yum:
     name: "@pulp-admin"
+  notify:
+    - Restart Apache service
+  tags:
+    - pulp_pkg
 
 - name: Configure Pulp admin client
   template:
     src: admin.conf.j2
     dest: "{{ pulp_admin_config_file }}"
+  notify:
+    - Restart Apache service
+  tags:
+    - pulp_config

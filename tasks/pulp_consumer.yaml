@@ -4,6 +4,10 @@
   yum:
     name: "{{ item }}"
   with_items: pulp_consumer_pkgs
+  notify:
+    - Restart goferd service
+  tags:
+    - pulp_pkg
 
 - name: Configure Pulp server
   template:
@@ -11,6 +15,8 @@
     dest: /etc/pulp/consumer/consumer.conf
   notify:
     - Restart goferd service
+  tags:
+    - pulp_config
 
 - name: Make the goferd service running
   service:
